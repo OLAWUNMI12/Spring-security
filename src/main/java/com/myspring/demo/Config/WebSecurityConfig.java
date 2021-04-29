@@ -25,8 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/", "/csss/*", "/js/*" )
-                .permitAll()
+                .antMatchers("/", "/csss/*", "/js/*" ).permitAll()
+                .antMatchers("/home/kick").hasRole("Football")
+                .antMatchers("/home/swing").hasRole("Tennis")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -36,13 +37,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.builder()
+        UserDetails football = User.builder()
                                     .username("Mason")
                                     .password(passwordEncoder.encode("Mason"))
-                                    .roles("Manager")
-
+                                    .roles("Football")
                                     .build();
-        return new InMemoryUserDetailsManager(userDetails);
+
+        UserDetails tennis = User.builder()
+                .username("Jab")
+                .password(passwordEncoder.encode("Jab"))
+                .roles("Tennis")
+                .build();
+        return new InMemoryUserDetailsManager(football,tennis);
 
     }
 }

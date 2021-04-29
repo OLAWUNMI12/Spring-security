@@ -37,4 +37,14 @@ import java.util.List;
         people.add(new Person("john", "snow"));
         return people.get(id);
     }
+
+    @GetMapping(path = "kick")
+    private String kick(){
+        return "Kicking";
+    }
+
+    @GetMapping(path = "swing")
+    private String swing(){
+        return "Swinging";
+    }
 }
