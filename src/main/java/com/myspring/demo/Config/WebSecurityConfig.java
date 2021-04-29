@@ -26,8 +26,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/", "/csss/*", "/js/*" ).permitAll()
-                .antMatchers("/home/kick").hasRole("Football")
-                .antMatchers("/home/swing").hasRole("Tennis")
+//                .antMatchers("/home/kick").hasRole("Football")
+//                .antMatchers("/home/swing").hasRole("Tennis")
+                .antMatchers("/home/run").hasAnyAuthority(ApplicationUserRoles.TENNIS_RUN)
+                .antMatchers("/home/throw").hasAnyAuthority(ApplicationUserRoles.FOOTBALL_THROW)
+                .antMatchers("/home/kick").hasAnyAuthority(ApplicationUserRoles.FOOTBALL_KICK)
+                .antMatchers("/home/swing").hasAnyAuthority(ApplicationUserRoles.TENNIS_SWING)
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -40,13 +44,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails football = User.builder()
                                     .username("Mason")
                                     .password(passwordEncoder.encode("Mason"))
-                                    .roles("Football")
+//                                    .roles("Football")
+                                    .authorities(ApplicationUserRoles.getFootballRoles())
                                     .build();
 
         UserDetails tennis = User.builder()
                 .username("Jab")
                 .password(passwordEncoder.encode("Jab"))
-                .roles("Tennis")
+//                .roles("Tennis")
+                .authorities(ApplicationUserRoles.getTennisRoles())
                 .build();
         return new InMemoryUserDetailsManager(football,tennis);
 

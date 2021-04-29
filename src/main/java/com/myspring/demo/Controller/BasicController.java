@@ -9,14 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("home")
  class BasicController {
-
-
     List<Person> people = new ArrayList<>();
-
 
     @Autowired
     @Qualifier("basicService")
@@ -30,7 +26,7 @@ import java.util.List;
         return people;
     }
 
-    @PostMapping("{id}")
+    @PostMapping(path = "{id}")
     private Person getPerson(@PathVariable("id") int id){
         people.add(new Person("Mathew", "Jack"));
         people.add(new Person("samuel", "Leke"));
@@ -46,5 +42,15 @@ import java.util.List;
     @GetMapping(path = "swing")
     private String swing(){
         return "Swinging";
+    }
+
+    @GetMapping(path = "run")
+    private String run(){
+        return "Running";
+    }
+
+    @GetMapping(path = "throw")
+    private String tennisThrow(){
+        return "Throwing";
     }
 }
