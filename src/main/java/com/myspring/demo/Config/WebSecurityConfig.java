@@ -3,6 +3,7 @@ package com.myspring.demo.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,6 +15,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -28,10 +30,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/csss/*", "/js/*" ).permitAll()
 //                .antMatchers("/home/kick").hasRole("Football")
 //                .antMatchers("/home/swing").hasRole("Tennis")
-                .antMatchers("/home/run").hasAnyAuthority(ApplicationUserRoles.TENNIS_RUN)
-                .antMatchers("/home/throw").hasAnyAuthority(ApplicationUserRoles.FOOTBALL_THROW)
-                .antMatchers("/home/kick").hasAnyAuthority(ApplicationUserRoles.FOOTBALL_KICK)
-                .antMatchers("/home/swing").hasAnyAuthority(ApplicationUserRoles.TENNIS_SWING)
+//                .antMatchers("/home/run").hasAuthority(ApplicationUserRoles.TENNIS_RUN)
+//                .antMatchers("/home/throw").hasAuthority(ApplicationUserRoles.FOOTBALL_THROW)
+//                .antMatchers("/home/kick").hasAuthority(ApplicationUserRoles.FOOTBALL_KICK)
+//                .antMatchers("/home/swing").hasAuthority(ApplicationUserRoles.TENNIS_SWING)
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,17 +46,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails football = User.builder()
                                     .username("Mason")
                                     .password(passwordEncoder.encode("Mason"))
-//                                    .roles("Football")
+                    //               .roles("Football")
                                     .authorities(ApplicationUserRoles.getFootballRoles())
                                     .build();
 
         UserDetails tennis = User.builder()
-                .username("Jab")
-                .password(passwordEncoder.encode("Jab"))
-//                .roles("Tennis")
-                .authorities(ApplicationUserRoles.getTennisRoles())
-                .build();
-        return new InMemoryUserDetailsManager(football,tennis);
+                                    .username("Jab")
+                                    .password(passwordEncoder.encode("Jab"))
+                    //                .roles("Tennis")
+                                    .authorities(ApplicationUserRoles.getTennisRoles())
+                                    .build();
+
+        UserDetails mainCoach = User.builder()
+                                    .username("mainCoach")
+                                    .password(passwordEncoder.encode("mainCoach"))
+                    //                .roles("MainCoach")
+                                    .authorities(ApplicationUserRoles.getMainCoachRoles())
+                                    .build();
+
+        UserDetails assistantCoach = User.builder()
+                                    .username("ACoach")
+                                    .password(passwordEncoder.encode("ACoach"))
+                    //                .roles("AssistantCoach")
+                                    .authorities(ApplicationUserRoles.getAssistantCoachRoles())
+                                    .build();
+        return new InMemoryUserDetailsManager(football, tennis, mainCoach, assistantCoach);
 
     }
 }

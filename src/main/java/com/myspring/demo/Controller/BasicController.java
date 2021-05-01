@@ -4,6 +4,7 @@ import com.myspring.demo.Model.Person;
 import com.myspring.demo.Services.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
     BasicService basicService;
 
     @GetMapping(path = "ball")
-    private List<Person> come(){
+    public List<Person> come(){
         people.add(new Person("Mathew", "Jack"));
         people.add(new Person("samuel", "Leke"));
         people.add(new Person("john", "snow"));
@@ -27,30 +28,34 @@ import java.util.List;
     }
 
     @PostMapping(path = "{id}")
-    private Person getPerson(@PathVariable("id") int id){
+    public Person getPerson(@PathVariable("id") int id){
         people.add(new Person("Mathew", "Jack"));
         people.add(new Person("samuel", "Leke"));
         people.add(new Person("john", "snow"));
         return people.get(id);
     }
 
-    @GetMapping(path = "kick")
-    private String kick(){
+    @GetMapping(path = "/kick")
+    @PreAuthorize("hasAuthority('football_kick')")
+    public String kick(){
         return "Kicking";
     }
 
-    @GetMapping(path = "swing")
-    private String swing(){
+    @GetMapping(path = "/swing")
+    @PreAuthorize("hasAuthority('tennis_swing')")
+    public String swing(){
         return "Swinging";
     }
 
-    @GetMapping(path = "run")
-    private String run(){
+    @GetMapping(path = "/run")
+    @PreAuthorize("hasAuthority('tennis_run')")
+    public String run(){
         return "Running";
     }
 
-    @GetMapping(path = "throw")
-    private String tennisThrow(){
+    @GetMapping(path = "/throw")
+    @PreAuthorize("hasAuthority('football_throw')")
+    public String tennisThrow(){
         return "Throwing";
     }
 }
