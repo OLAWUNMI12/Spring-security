@@ -29,7 +29,7 @@ public class CoachController {
         return player;
     }
 
-    @DeleteMapping(path = "/deleteplayer/{id}")
+    @DeleteMapping(path = "/deletePlayer/{id}")
     @PreAuthorize("hasAuthority('coach_delete')")
     public Player deletePlayer(@PathVariable Integer id){
         Player player = playersList.get(id);
