@@ -13,7 +13,7 @@ public class CoachController {
 
     List<Player> playersList = new ArrayList<>();
 
-    @GetMapping(path = "/getAllPlayer")
+    @GetMapping(path = "/getAllPlayers")
     @PreAuthorize("hasAuthority('coach_get')")
     public List<Player> getAvailablePlayers(){
         playersList.add(new Player("james", 20));
