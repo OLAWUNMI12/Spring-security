@@ -25,9 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .disable()
-                .and()
+                .csrf()
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .and()
+                .disable()
                 .authorizeRequests()
                 .antMatchers("/", "/csss/*", "/js/*" ).permitAll()
 //                .antMatchers("/home/kick").hasRole("Football")
@@ -39,7 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+//                .httpBasic()
+                .formLogin();
     }
 
     @Override
